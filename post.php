@@ -8,9 +8,11 @@ if (!$conn) {
 }
 // else{ echo "conn success";}
 
-$mood = key($_POST);
-$post = current($_POST);
 
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $mood = key($_POST);
+    $post = current($_POST);
 switch ($mood) {
     case 'happy':
     case 'sad':
@@ -36,6 +38,11 @@ switch ($mood) {
         echo "Invalid mood.";
         break;
 }
+}
+else {
+    echo "User not logged in."; // Display an error message if the user is not logged in
+}
+
 
 mysqli_close($conn);
 ?>

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $conn = mysqli_connect("localhost","root","", "talkaitdb");
 if (!$conn) {
     echo "conn error";
@@ -41,9 +41,10 @@ if (isset($_POST['loginbtn'])) {
             
             // Insert session data into the 'sessions' table
             $sql = "INSERT INTO sessions (user_id, session_token, expiry_date) VALUES ('$user_id', '$session_token', '$expiry_date')";
+            $_SESSION['user_id'] = $user_id;
             if (mysqli_query($conn,$sql) === TRUE) {
     
-                header("Location: ../h.html");
+                header("Location:h.html");
                 exit;
                 // echo "log in success";
             } else {
