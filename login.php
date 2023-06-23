@@ -15,7 +15,7 @@ if (isset($_POST['signupbtn'])) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $sql = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashedPassword')";
     if (mysqli_query($conn,$sql) === TRUE) {
-        header("Location: ../h.php");
+        header("Location: ../h.html");
         exit;
         // echo "saved success";
     } else {
@@ -43,7 +43,7 @@ if (isset($_POST['loginbtn'])) {
             $sql = "INSERT INTO sessions (user_id, session_token, expiry_date) VALUES ('$user_id', '$session_token', '$expiry_date')";
             if (mysqli_query($conn,$sql) === TRUE) {
     
-                header("Location: ../h.php");
+                header("Location: ../h.html");
                 exit;
                 // echo "log in success";
             } else {

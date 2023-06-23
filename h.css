@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+:root{
+  --Daymain:rgba(210, 210, 210, 0.142);
+  --Daysecondary: white;
+}
 .container {
   height: 100vh;
   width: 100vw;
@@ -13,9 +17,9 @@
 }
 
 .nav {
-  background-color: purple;
   grid-column: span 2;
-  background-color: rgba(210, 210, 210, 0.142);
+  /* background-color: rgba(210, 210, 210, 0.142); */
+  background-color: var(--Daymain);
   border-bottom: 1px solid rgb(222, 222, 222);
   font-family: cursive;
   font-size: 45px;
@@ -29,7 +33,8 @@
 }
 
 .left {
-  background-color: rgba(210, 210, 210, 0.142);
+  /* background-color: rgba(210, 210, 210, 0.142); */
+  background-color: var(--Daymain);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,7 +50,7 @@
 }
 
 .right {
-  /* background-color: blue; */
+  background-color: var(--Daysecondary);
   /* display: grid; */
   /* grid-template-rows: 55% auto; */
   display: flex;
@@ -61,7 +66,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(210, 210, 210, 0.142);
+  /* background-color: rgba(210, 210, 210, 0.142); */
+  background-color: var(--Daymain);
   color: rgb(40, 40, 40);
   height: 40px;
   width: 300px;
@@ -73,6 +79,7 @@
   cursor: pointer;
   box-shadow: 0px 3px 8px rgb(215, 215, 215);
 }
+
 
 #moodAsk img {
   /* background-color: red; */
@@ -191,8 +198,8 @@ img {
 #outerCircle {
   height: 180px;
   width: 180px;
-  /* background-color: rgba(209, 209, 209, 0.126); */
-  background-color: red;
+  background-color: rgba(209, 209, 209, 0.126);
+  /* background-color: red; */
   border-radius: 50%;
 }
 
@@ -205,4 +212,11 @@ img {
   cursor: pointer;
 }
 
-#meditate {}
+/* #meditate {} */
+
+
+
+
+
+
+

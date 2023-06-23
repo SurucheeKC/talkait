@@ -5,6 +5,13 @@ const moodWrite = document.getElementById('moodWrite');
 const textarea = document.createElement('textarea');
 const listen = document.querySelector('.listen');
 const right = document.getElementsByClassName('right');
+const btnPost = document.createElement('button');
+btnPost.type = "submit";
+
+const date = new Date();
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
+const day = date.getDate();
 
 const happy = document.getElementsByClassName('happy');
 const sad = document.getElementsByClassName('sad');
@@ -21,59 +28,69 @@ let pressCount = 0;
 
 function moodAsk() {
   if (pressCount % 2 == 0) {
-    // moodAskBtn.style.transform = "translateY(3px)";
-    moodAskBtn.style.boxShadow = "0px 5px 3px rgb(205,205,205)";
-    moodOptionBtn.style.display = 'block'
+    moodOptionBtn.style.display = 'block';
   } else {
-    // moodAskBtn.style.transform = "translateY(0px)";
-    moodAskBtn.style.boxShadow = " 0px 3px 8px rgb(215, 215, 215)";
-    moodOptionBtn.style.display = 'none'
+    moodOptionBtn.style.display = 'none';
   }
   pressCount++;
 }
 
-// moodAskBtn.addEventListener("click",moodAsk());
 
 function mood(emotion) {
   
-  listen.style.marginTop = "80px";
+  listen.style.marginTop = "90px";
   post.style.display = "block";
-  moodWrite.style.width = 100 + "%";
-
+  moodWrite.style.width = "100%";
+  moodOptionBtn.style.display = 'none'
+  moodAskBtn.style.color = " black";
+  textarea.name = "textarea";
+  textarea.id = "moodWrite";
+  moodWrite.appendChild(textarea);
+  moodWrite.appendChild(btnPost);
+  btnPost.innerText = "Write";
+  moodAskBtn.innerText = year + " - " + month + " - " + day;
+  
+  
   switch (emotion) {
     case "happy":
+      moodAskBtn.style.backgroundColor = "rgb(255, 255, 0, 0.2)";
       textarea.name = "happy";
-      moodWrite.appendChild(textarea);
       break;
     case "sad":
+      moodAskBtn.style.backgroundColor = "rgb(7, 151, 179,0.2)";
       textarea.name = "sad";
-      moodWrite.appendChild(textarea);
       break;
     case "suprise":
+      moodAskBtn.style.backgroundColor = "rgb(212, 113, 0,0.2)";
       textarea.name = "suprise";
-      moodWrite.appendChild(textarea);
       break;
     case "disgust":
+      moodAskBtn.style.backgroundColor = "rgb(11, 75, 11,0.2)";
       textarea.name = "disgust";
-      moodWrite.appendChild(textarea);
       break;
     case "fear":
+      moodAskBtn.style.backgroundColor = "rgb(19, 19, 121,0.2)";
       textarea.name = "fear";
-      moodWrite.appendChild(textarea);
       break;
     case "angry":
+      moodAskBtn.style.backgroundColor = "rgb(195, 3, 3,0.2)";
       textarea.name = "angry";
-      moodWrite.appendChild(textarea);
       break;
     case "journal":
+      moodAskBtn.style.backgroundColor = "rgb(0, 0, 0,0.2)";
       textarea.name = "journal";
-      moodWrite.appendChild(textarea);
       break;
   }
+  moodOptionBtn.style.display = 'none';
+  pressCount++;
 }
 
 
 const breatheExe = () => {
   // exe.innerHTML = ;
 
+}
+
+const darkMode = () =>{
+  // document.getElementsByClassName('nav').style.setProperty = 
 }
