@@ -15,7 +15,7 @@ if (isset($_POST['signupbtn'])) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $sql = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashedPassword')";
     if (mysqli_query($conn,$sql) === TRUE) {
-        header("Location: ../h.html");
+        header("Location: h.html");
         exit;
         // echo "saved success";
     } else {

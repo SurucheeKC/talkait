@@ -1,4 +1,5 @@
 <?php
+session_start();
 $conn = mysqli_connect("localhost", "root", "", "talkaitdb");
 
 if (!$conn) {
@@ -18,11 +19,9 @@ switch ($mood) {
     case 'fear':
     case 'angry':
     case 'journal':
-        // Insert the post into the database
-        $query = "INSERT INTO posts (user_id, mood, comment) VALUES (?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $query);
+        $sql = "INSERT INTO posts (user_id, mood, comment) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "iss", $user_id, $mood, $post);
-        // Replace $user_id with the actual user ID associated with the post
 
         if (mysqli_stmt_execute($stmt)) {
             echo "Post saved successfully.";
