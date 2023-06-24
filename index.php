@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,7 +41,7 @@
                     <label>Enter Password :</label>
                     <input type="password" name="signup-password" id="signup-password" placeholder="Enter Password">
                     <label>Confirm Password :</label>
-                    <input type="password" id="signup-password" placeholder="Enter Password">
+                    <input name="confirm-password" type="password" id="signup-password" placeholder="Enter Password">
                     <button id="signupbtn" name="signupbtn">Sign Up</button>
 
                 </form>

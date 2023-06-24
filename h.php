@@ -1,3 +1,7 @@
+
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +24,9 @@
           <span><a href="overview.html">Overview</a></span>
         </li>
         <li>
-          <span><a href="index.html">Log out</a></span>
+        <form action="logout.php"><Button name="goto"
+                        style="width:85%;"
+                        type="submit">Logout</Button></form>
         </li>
       </ul>
     </div>

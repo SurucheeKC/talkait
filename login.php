@@ -11,16 +11,22 @@ if (isset($_POST['signupbtn'])) {
     $email = $_POST['signup-email'];
     $username = $_POST['signup-username'];
     $password = $_POST['signup-password'];
+    $confirmPassword = $_POST['confirm-password'];
 
+    // Check if the passwords match
+    if ($password !== $confirmPassword) {
+        echo "Passwords do not match";
+        exit;}
+    else{
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $sql = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashedPassword')";
     if (mysqli_query($conn,$sql) === TRUE) {
-        header("Location: h.html");
+        header("Location: h.php");
         exit;
         // echo "saved success";
     } else {
         echo "error occured";
-    }
+    }}
 }
 
 if (isset($_POST['loginbtn'])) {
@@ -44,7 +50,7 @@ if (isset($_POST['loginbtn'])) {
             $_SESSION['user_id'] = $user_id;
             if (mysqli_query($conn,$sql) === TRUE) {
     
-                header("Location:h.html");
+                header("Location:h.php");
                 exit;
                 // echo "log in success";
             } else {

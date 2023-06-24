@@ -26,7 +26,9 @@ switch ($mood) {
         mysqli_stmt_bind_param($stmt, "iss", $user_id, $mood, $post);
 
         if (mysqli_stmt_execute($stmt)) {
-            echo "Post saved successfully.";
+            header("Location: h.php");
+            
+            exit;
         } else {
             echo "Error occurred while saving the post.";
         }
