@@ -21,7 +21,7 @@ session_start();
       <ul type="none" id="profile">
         <li>Id</li>
         <li>
-          <span><a href="overview.html">Overview</a></span>
+          <span><a href="page3.php">Overview</a></span>
         </li>
         <li>
         <form action="logout.php"><Button name="goto"
