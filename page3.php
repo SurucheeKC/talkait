@@ -23,14 +23,10 @@ if (isset($_SESSION['user_id'])) {
     }
 
     mysqli_stmt_close($stmt);
-
-    // Close the connection and proceed to create the pie chart
     mysqli_close($conn);
 } else {
     echo "User not logged in.";
 }
-
-// Now, let's create the pie chart using Google Charts
 ?>
 
 <!DOCTYPE html>
@@ -60,18 +56,24 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
     <div class="chart-column">
-        <div id="moodChart" style="width: 100%; height: 400px;"></div>
+        <div id="moodChart" style="width: 125%; height: 600px;"></div>
+       
     </div>
     <div class="posts-column">
         <h2>Posts by Mood</h2>
         <?php
-        // Display posts based on mood
+        $conn = mysqli_connect("localhost", "root", "", "talkaitdb");
+
+        if (!$conn) {
+            echo "Connection error: " . mysqli_connect_error();
+            exit;
+        }
         if (isset($moodData)) {
             foreach ($moodData as $mood => $count) {
                 echo "<h3>$mood ($count posts)</h3>";
-                
-                // Fetch and display posts of this mood
+           
                 $sql = "SELECT comment FROM posts WHERE user_id = ? AND mood = ?";
+
                 $stmt = mysqli_prepare($conn, $sql);
                 mysqli_stmt_bind_param($stmt, "is", $user_id, $mood);
                 mysqli_stmt_execute($stmt);
@@ -87,17 +89,110 @@ if (isset($_SESSION['user_id'])) {
             }
         }
         ?>
+         <h2>Advice</h2>
+        <?php
+        if (isset($moodData)) {
+            foreach ($moodData as $mood => $count) {
+                echo "<h3>$mood ($count posts)</h3>";
+
+                // Determine mood-specific advice based on percentage
+                $percentage = ($count / array_sum($moodData)) * 100;
+                $advice = "";
+
+                if ($mood === 'angry') {
+                    if ($percentage >= 0 && $percentage <= 20) {
+                        $advice = "You do not have anger issues.";
+                    } elseif ($percentage > 20 && $percentage <= 40) {
+                        $advice = "We suggest you plysical exercise to relieve the anger and tension.";
+                    } elseif ($percentage > 40 && $percentage <= 60) {
+                        $advice = "We suggest you to use self-care routines.";
+                    } elseif ($percentage > 60 && $percentage <= 80) {
+                        $advice = "We encourage you meditation and seeking professional help if needed.";
+                    } else {
+                        $advice = "We suggest therapy to address intense anger.";
+                    }
+                } elseif ($mood === 'happy') {
+                    if ($percentage >= 0 && $percentage <= 20) {
+                        $advice = "We encourage you to be more happy.";
+                    } elseif ($percentage > 20 && $percentage <= 40) {
+                        $advice = "We encourage you to do things that makes you happy.";
+                    } elseif ($percentage > 40 && $percentage <= 60) {
+                        $advice = "We suggest you to savor the moment and express gratitude.";
+                    } elseif ($percentage > 60 && $percentage <= 80) {
+                        $advice = "WE suggest setting new goals to maintain motivation.";
+                    } else {
+                        $advice = "We suggest you to share your happiness with other people.";
+                    }
+
+                } elseif ($mood === 'surprise') {
+                   
+                    if ($percentage >= 0 && $percentage <= 20) {
+                        $advice = "We suggest you to embrace the unexpected with curiosity.";
+                    } elseif ($percentage > 20 && $percentage <= 40) {
+                        $advice = "We suggest you to take a moment to process the surprise before reacting.";
+                    } elseif ($percentage > 40 && $percentage <= 60) {
+                        $advice = "We suggest discussing your feelings and reactions with others.";
+                    } elseif ($percentage > 60 && $percentage <= 80) {
+                        $advice = "We want to remind you that surprises can lead to personal growth and new experiences.";
+                    } else {
+                        $advice = "We are happy for you.";
+                    }
+                }
+                elseif ($mood === 'sad') {
+                    if ($percentage >= 0 && $percentage <= 20) {
+                        $advice = "We encourage you to live your life to the fullest.";
+                    } elseif ($percentage > 20 && $percentage <= 40) {
+                        $advice = "We encourage you to do things that makes you happy.";
+                    } elseif ($percentage > 40 && $percentage <= 60) {
+                        $advice = "We suggest you to write down your thoughts in a journal.";
+                    } elseif ($percentage > 60 && $percentage <= 80) {
+                        $advice = "WE suggest setting new goals to maintain motivation.";
+                    } else {
+                        $advice = "We suggest you to share your happiness with other people.";
+                    }
+
+                }elseif ($mood === 'disgust') {
+                    if ($percentage >= 0 && $percentage <= 20) {
+                        $advice = "We encourage you to be more happy.";
+                    } elseif ($percentage > 20 && $percentage <= 40) {
+                        $advice = "We encourage you to do things that makes you happy.";
+                    } elseif ($percentage > 40 && $percentage <= 60) {
+                        $advice = "We suggest you to savor the moment and express gratitude.";
+                    } elseif ($percentage > 60 && $percentage <= 80) {
+                        $advice = "WE suggest setting new goals to maintain motivation.";
+                    } else {
+                        $advice = "We suggest you to share your happiness with other people.";
+                    } 
+
+                }elseif ($mood === 'fear') {
+                    if ($percentage >= 0 && $percentage <= 20) {
+                        $advice = "We encourage you to be more happy.";
+                    } elseif ($percentage > 20 && $percentage <= 40) {
+                        $advice = "We encourage you to do things that makes you happy.";
+                    } elseif ($percentage > 40 && $percentage <= 60) {
+                        $advice = "We suggest you to savor the moment and express gratitude.";
+                    } elseif ($percentage > 60 && $percentage <= 80) {
+                        $advice = "WE suggest setting new goals to maintain motivation.";
+                    } else {
+                        $advice = "We suggest you to share your happiness with other people.";
+                    } 
+
+                }
+
+
+                // Display the mood-specific advice
+                echo "<p>$advice</p>";
+            }
+        }
+        ?>
     </div>
 
     <script>
-        // Mood data from PHP
         var moodData = <?php echo json_encode($moodData); ?>;
 
-        // Load the Google Charts library
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
 
-        // Function to draw the pie chart
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Mood');
