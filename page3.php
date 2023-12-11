@@ -61,7 +61,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
     <div class="posts-column">
         <h2>Posts by Mood</h2>
-        <?php
+        <!-- <?php
         $conn = mysqli_connect("localhost", "root", "", "talkaitdb");
 
         if (!$conn) {
@@ -88,14 +88,12 @@ if (isset($_SESSION['user_id'])) {
                 mysqli_stmt_close($stmt);
             }
         }
-        ?>
+        ?> -->
          <h2>Advice</h2>
         <?php
         if (isset($moodData)) {
             foreach ($moodData as $mood => $count) {
                 echo "<h3>$mood ($count posts)</h3>";
-
-                // Determine mood-specific advice based on percentage
                 $percentage = ($count / array_sum($moodData)) * 100;
                 $advice = "";
 
@@ -178,39 +176,78 @@ if (isset($_SESSION['user_id'])) {
                     } 
 
                 }
-
-
-                // Display the mood-specific advice
                 echo "<p>$advice</p>";
             }
         }
         ?>
     </div>
 
-    <script>
-        var moodData = <?php echo json_encode($moodData); ?>;
 
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Mood');
-            data.addColumn('number', 'Count');
-            data.addRows([
-                <?php foreach ($moodData as $mood => $count) {
-                    echo "['$mood', $count],";
-                } ?>
-            ]);
+<script>
+    var moodData = <?php echo json_encode($moodData); ?>;
 
-            var options = {
-                title: 'Mood Distribution'
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Mood');
+        data.addColumn('number', 'Count');
+        data.addRows([
+            <?php foreach ($moodData as $mood => $count) {
+                echo "['$mood', $count],";
+            } ?>
+        ]);
+
+        var options = {
+            title: 'Mood Distribution'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('moodChart'));
+        
+        // Add a click event listener to the chart
+        google.visualization.events.addListener(chart, 'select', chartClickHandler);
+
+        function chartClickHandler() {
+            var selectedMood = data.getValue(chart.getSelection()[0].row, 0);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var responseData = JSON.parse(xhr.responseText);
+                        displayPosts(responseData);
+                    } else {
+                        console.error('Error fetching data from the server');
+                    }
+                }
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('moodChart'));
-            chart.draw(data, options);
+            xhr.open('GET', 'forclickonchart.php?mood=' + selectedMood, true);
+            xhr.send();
         }
-    </script>
+
+        function displayPosts(posts) {
+            var postList = document.getElementById('postList');
+            postList.innerHTML = '';
+
+            if (posts.length > 0) {
+                posts.forEach(function(post) {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = post.comment;
+                    postList.appendChild(listItem);
+                });
+
+                document.getElementById('postContainer').style.display = 'block';
+            } else {
+                document.getElementById('postContainer').style.display = 'none';
+            }
+        }
+
+        chart.draw(data, options);
+    }
+</script>
 </body>
 </html>
 
